@@ -8,4 +8,8 @@ module "website" {
   server_function_config = {
     filename = "server.zip"
   }
+
+  image_optimization_function_config = {
+    filename = "image-optimization.zip"
+  }
 }
