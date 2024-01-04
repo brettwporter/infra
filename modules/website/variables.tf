@@ -16,6 +16,23 @@ variable "server_function_config" {
 }
 
 /**
+ * Image Optimization Function
+ ##*/
+
+variable "image_optimization_function_config" {
+  description = "Configuration for the image optimization function"
+  type = object({
+    filename        = string
+    function_name   = optional(string, "image-optimization")
+    handler         = optional(string, "index.mjs")
+    memory_size     = optional(number, 2048)
+    runtime         = optional(string, "nodejs20.x")
+    timeout         = optional(number, 10)
+    tracing_enabled = optional(bool, true)
+  })
+}
+
+/**
  * Networking
  ##*/
 
@@ -26,6 +43,11 @@ variable "vpc_config" {
     subnet_ids         = optional(list(string), [])
     security_group_ids = optional(list(string), [])
   })
+  default = {
+    enabled            = false
+    subnet_ids         = []
+    security_group_ids = []
+  }
 }
 
 /**

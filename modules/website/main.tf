@@ -46,7 +46,7 @@ resource "aws_lambda_function" "server" {
   })
 }
 
-resource "aws_iam_role" "server" {
+resource "aws_iam_role" "server_lambda" {
   name = var.server_function_config.function_name
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -62,7 +62,7 @@ resource "aws_iam_role" "server" {
   })
 }
 
-resource "aws_iam_role_policy" "server" {
+resource "aws_iam_role_policy" "server_lambda" {
   name = var.server_function_config.function_name
   policy = jsondecode({
     Version = "2012-10-17"
@@ -101,12 +101,86 @@ resource "aws_iam_role_policy" "server" {
       }
     ]
   })
-  role = aws_iam_role.server.id
+  role = aws_iam_role.server_lambda.id
 }
 
 /**
  * Image Optimization Function
  ##*/
+
+resource "aws_lambda_function" "image_optimization" {
+  architectures    = ["arm64"]
+  description      = "Image Optimization function for the website"
+  filename         = var.image_optimization_function_config.filename
+  function_name    = var.image_optimization_function_config.function_name
+  handler          = var.image_optimization_function_config.handler
+  memory_size      = var.image_optimization_function_config.memory_size
+  role             = aws_iam_role.image_optimization.arn
+  runtime          = var.image_optimization_function_config.runtime
+  source_code_hash = filebase64sha256(var.image_optimization_function_config.filename)
+  timeout          = var.image_optimization_function_config.timeout
+
+  dynamic "tracing_config" {
+    for_each = var.image_optimization_function_config.tracing_enabled ? [1] : []
+
+    content {
+      mode = "Active"
+    }
+  }
+
+  dynamic "vpc_config" {
+    for_each = var.vpc_config.enabled ? [1] : []
+
+    content {
+      subnet_ids         = var.vpc_config.subnet_ids
+      security_group_ids = var.vpc_config.security_group_ids
+    }
+  }
+
+  environment {
+    variables = {
+      BUCKET_NAME       = "INSERT_ASSET_BUCKET_NAME_HERE"
+      BUCKET_KEY_PREFIX = "INSERT_ASSET_BUCKET_KEY_PREFIX_HERE (Optional)"
+    }
+  }
+
+  tags = merge(var.shared_tags, {
+    Name = var.image_optimization_function_config.function_name
+  })
+}
+
+resource "aws_iam_role" "image_optimization" {
+  name = var.image_optimization_function_config.function_name
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "image_optimization" {
+  name = var.image_optimization_function_config.function_name
+  policy = jsondecode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "s3:GetObject"
+        ]
+        Effect   = "Allow"
+        Resource = "INSERT ASSET S3 BUCKET ARN"
+      }
+    ]
+  })
+  role = aws_iam_role.image_optimization.id
+}
 
 /**
  * Asset Files Bucket
