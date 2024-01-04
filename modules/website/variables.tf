@@ -1,0 +1,39 @@
+/**
+ * Server Function
+ ##*/
+
+variable "server_function_config" {
+  description = "Configuration for the server function"
+  type = object({
+    filename        = string
+    function_name   = optional(string, "server")
+    handler         = optional(string, "index.mjs")
+    memory_size     = optional(number, 2048)
+    runtime         = optional(string, "nodejs20.x")
+    timeout         = optional(number, 10)
+    tracing_enabled = optional(bool, true)
+  })
+}
+
+/**
+ * Networking
+ ##*/
+
+variable "vpc_config" {
+  description = "Configuration for the AWS networking"
+  type = object({
+    enabled            = optional(bool, false)
+    subnet_ids         = optional(list(string), [])
+    security_group_ids = optional(list(string), [])
+  })
+}
+
+/**
+ * Tags
+ ##*/
+
+variable "shared_tags" {
+  description = "Tags to be applied to all resources"
+  type        = map(string)
+  default     = {}
+}
