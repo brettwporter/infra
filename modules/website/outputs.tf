@@ -25,6 +25,14 @@ output "revalidation_function" {
   value       = aws_lambda_function.revalidation
 }
 
+/**
+ * Warmer Function
+ ***/
+
+output "warmer_function" {
+  description = "The warmer function attributes. Attributes are documented under the aws_lambda_function resource in the AWS Provider documentation."
+  value       = aws_lambda_function.warmer
+}
 
 /**
  * Revalidation Queue
