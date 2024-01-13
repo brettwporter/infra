@@ -50,6 +50,24 @@ variable "revlidation_function_config" {
 }
 
 /**
+ * Warmer Function
+ ***/
+
+variable "warmer_function_config" {
+  description = "Configuration for the warmer function"
+  type = object({
+    filename        = string
+    function_name   = optional(string, "warmer")
+    handler         = optional(string, "index.mjs")
+    memory_size     = optional(number, 2048)
+    runtime         = optional(string, "nodejs20.x")
+    timeout         = optional(number, 10)
+    tracing_enabled = optional(bool, true)
+    concurrency     = optional(number, 1)
+  })
+}
+
+/**
  * Networking
  ***/
 

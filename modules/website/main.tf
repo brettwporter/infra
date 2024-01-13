@@ -218,13 +218,6 @@ resource "aws_lambda_function" "revalidation_function" {
     }
   }
 
-  environment {
-    variables = {
-      BUCKET_NAME       = "INSERT_ASSET_BUCKET_NAME_HERE"
-      BUCKET_KEY_PREFIX = "INSERT_ASSET_BUCKET_KEY_PREFIX_HERE (Optional)"
-    }
-  }
-
   tags = merge(var.shared_tags, {
     Name = var.revalidation_function_config.function_name
   })
@@ -269,7 +262,6 @@ resource "aws_lambda_event_source_mapping" "revalidation_queue" {
   function_name    = aws_lambda_function.revalidation_function.function_name
 }
 
-
 /**
  * Revalidation Queue
  ***/
@@ -294,6 +286,79 @@ resource "aws_sqs_queue" "revalidation_queue" {
 /**
  * Warmer Function
  ***/
+
+resource "aws_lambda_function" "warmer" {
+  description      = "Warmer function for the website"
+  filename         = var.warmer_function_config.filename
+  function_name    = var.warmer_function_config.function_name
+  handler          = var.warmer_function_config.handler
+  memory_size      = var.warmer_function_config.memory_size
+  role             = aws_iam_role.warmer.arn
+  runtime          = var.warmer_function_config.runtime
+  source_code_hash = filebase64sha256(var.warmer_function_config.filename)
+  timeout          = var.warmer_function_config.timeout
+
+  dynamic "tracing_config" {
+    for_each = var.warmer_function_config.tracing_enabled ? [1] : []
+
+    content {
+      mode = "Active"
+    }
+  }
+
+  dynamic "vpc_config" {
+    for_each = var.vpc_config.enabled ? [1] : []
+
+    content {
+      subnet_ids         = var.vpc_config.subnet_ids
+      security_group_ids = var.vpc_config.security_group_ids
+    }
+  }
+
+  environment {
+    variables = {
+      FUNCTION_NAME = var.server_function_config.function_name
+      CONCURRENCY  = var.warmer_function_config.concurrency
+    }
+  }
+
+  tags = merge(var.shared_tags, {
+    Name = var.warmer_function_config.function_name
+  })
+}
+
+resource "aws_iam_role" "warmer_lambda" {
+  name = var.warmer_function_config.function_name
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "warmer_lambda" {
+  name = var.warmer_function_config.function_name
+  policy = jsondecode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "lambda:InvokeFunction"
+        ]
+        Effect   = "Allow"
+        Resource = aws_lambda_function.server.arn
+      }
+    ]
+  })
+  role = aws_iam_role.warmer_lambda.id
+}
 
 /**
  * Warmer Eventbridge Cron
