@@ -17,7 +17,7 @@ variable "server_function_config" {
 
 /**
  * Image Optimization Function
- ##*/
+ ***/
 
 variable "image_optimization_function_config" {
   description = "Configuration for the image optimization function"
@@ -33,8 +33,25 @@ variable "image_optimization_function_config" {
 }
 
 /**
+ * Revalidation Function
+ ***/
+ 
+variable "revlidation_function_config" {
+  description = "Configuration for the revalidation function"
+  type = object({
+    filename        = string
+    function_name   = optional(string, "revalidation")
+    handler         = optional(string, "index.mjs")
+    memory_size     = optional(number, 2048)
+    runtime         = optional(string, "nodejs20.x")
+    timeout         = optional(number, 10)
+    tracing_enabled = optional(bool, true)
+  })
+}
+
+/**
  * Networking
- ##*/
+ ***/
 
 variable "vpc_config" {
   description = "Configuration for the AWS networking"
@@ -52,7 +69,7 @@ variable "vpc_config" {
 
 /**
  * Tags
- ##*/
+ ***/
 
 variable "shared_tags" {
   description = "Tags to be applied to all resources"
