@@ -70,6 +70,6 @@
   "metadata": {
     "og:title": "brettwporter/infra",
     "og:description": "Expertly crafted Terraform modules ready for use in your infrastructure. Designed for simplicity, customization, and featuring open-source transparency.",
-    "og:image": "/images/og-image.png"
+    "og:image": "https://mintlify.s3-us-west-1.amazonaws.com/brettwporter/images/og-image.png"
   }
 }
