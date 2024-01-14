@@ -38,7 +38,7 @@
   ],
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Getting Started",
       "pages": ["introduction", "quickstart", "development"]
     },
     {
@@ -66,5 +66,8 @@
   ],
   "footerSocials": {
     "github": "https://github.com/brettwporter/infra"
+  },
+  "metadata": {
+    "og:image": "/images/og-image.svg"
   }
 }

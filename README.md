@@ -4,7 +4,7 @@ Expertly crafted Terraform modules ready for use in your infrastructure. Designe
 
 ## Documentation
 
-Coming Soon
+Visit https://infra.brettwporter.com to view the documentation.
 
 ## Contributing
 
