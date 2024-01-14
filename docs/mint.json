@@ -15,8 +15,8 @@
     "light": "#FFC799",
     "dark": "#FFC799",
     "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+      "from": "#FFC799",
+      "to": "#FFC799"
     }
   },
   "topbarLinks": [],
@@ -27,6 +27,11 @@
   "tabs": [],
   "anchors": [
     {
+      "name": "Issues",
+      "icon": "scrubber",
+      "url": "https://github.com/brettwporter/infra/issues"
+    },
+    {
       "name": "GitHub",
       "icon": "github",
       "url": "https://github.com/brettwporter/infra"
@@ -35,17 +40,7 @@
   "navigation": [
     {
       "group": "Getting Started",
-      "pages": ["introduction", "quickstart", "development"]
-    },
-    {
-      "group": "Essentials",
-      "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation"
-      ]
+      "pages": ["introduction"]
     }
   ],
   "footerSocials": {
