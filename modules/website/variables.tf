@@ -1,6 +1,6 @@
 /**
  * Server Function
- ##*/
+ ***/
 
 variable "server_function_config" {
   description = "Configuration for the server function"
