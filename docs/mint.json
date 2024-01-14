@@ -2,7 +2,8 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "infra/brettwporter",
   "modeToggle": {
-    "default": "dark"
+    "default": "dark",
+    "isHidden": true
   },
   "logo": {
     "dark": "/logo/dark.svg",
@@ -20,15 +21,10 @@
   },
   "topbarLinks": [],
   "topbarCtaButton": {
-    "name": "GitHub",
+    "type": "github",
     "url": "https://github.com/brettwporter/infra"
   },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api-reference"
-    }
-  ],
+  "tabs": [],
   "anchors": [
     {
       "name": "GitHub",
@@ -49,18 +45,6 @@
         "essentials/images",
         "essentials/settings",
         "essentials/navigation"
-      ]
-    },
-    {
-      "group": "API Documentation",
-      "pages": ["api-reference/introduction"]
-    },
-    {
-      "group": "Endpoint Examples",
-      "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
       ]
     }
   ],
