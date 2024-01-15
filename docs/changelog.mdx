@@ -1,62 +1,60 @@
 ---
 title: Changelog
-description: "Expertly crafted Terraform modules ready for use in your infrastructure. Designed for simplicity, customization, and featuring open-source transparency."
+description: "Latest updates and announcements."
 ---
 
-<img
-  className="block dark:hidden"
-  src="/images/hero-light.svg"
-  alt="Hero Light"
-/>
-<img
-  className="hidden dark:block"
-  src="/images/hero-dark.svg"
-  alt="Hero Dark"
-/>
+## January 2024 - Launch and Website Module
 
-## What is infra/brettwporter?
+---
 
-This is not a Terraform module hosted in GitHub or in a registry that you've typically used. This is a collection of Terraform modules that are designed to be copied into **YOUR** infrastructure and organization.
+We're live and have shipped our first module!
 
-Pick the modules you need, then fork or copy and paste into your own repo. Host it as a private module in your own registry, or use it as a local module. **YOU** own it.
+Here's a quick overview of what's new:
 
-**EXTEND** it to your organization's needs.
+- [Website](/modules/website/nextjs) - A simple website hosted on AWS utilizing OpenNext architecture made for Next.js based sites.
 
-## FAQ
+### Website
 
-<AccordionGroup>
-  <Accordion title="Why copy and paste instead of a public module?">
-    The rationale is to provide you with autonomy and control over the code, enabling you to determine the setup of your infrastructure.
+<img src="/images/hero-website.svg" alt="Hero Website" />
 
-    Some of the drawbacks of public modules are that they are not always maintained, and they may not be designed to fit your organization's needs. They do not have the same structure and typically include more complexity which makes them harder to utilize.
+We've added a website module for hosting Next.js based sites on AWS. It has full support for API routes, SSG, SSR, ISR, and more.
 
-    Also, since Terraform lacks a normal package manager, this approach allows you to design the modules in your own version control system, adhering to software development best practices.
+This architecture is based on utilizing OpenNext for generation of the site bundles. Refer to [OpenNext](https://open-next.js.org/) for more information on what Next.js features it supports.
 
-  </Accordion>
+#### Utilization
 
-<Accordion title="Can I use this in my project?">
-  Absolutely. You are welcome to utilize this for both personal and commercial
-  projects. There is no need for attribution. The license is
-  [here](https://github.com/brettwporter/infra/blob/main/LICENSE.md). If you do
-  utilize it in a project, please consider sponsoring the project.
-</Accordion>
+Below is how you'd reference the Website module in your Terraform configuration with some configurations provided. Refer to the [Website](/modules/website/nextjs) docs for full configuration options.
 
-  <Accordion title="Why is the only framework supported Terraform?">
-    Terraform is the most widely used infrastructure as code tool. It is also the
-    most flexible and has the most community support.
+<CodeGroup>
 
-However, with Hashicorp's recent changes to the open source
-licensing model, it is important to be aware
-of the implications of using Terraform in your organization.
-[OpenTofu](https://opentofu.org) is a project that aims to provide an open
-source alternative to Terraform and may be more suitable for you to use.
+```hcl Code
+module "website" {
+  source = "path-to-copied-website-module"
 
-  </Accordion>
+  server_function_config = {
+    filename = "server.zip"
+  }
 
-  <Accordion title="Why are the modules designed by application type?">
-    The design of the modules mirrors the structure of an application, enhancing their comprehensibility and integration. They are crafted to be easily grasped by a typical developer, not exclusively for a DevOps or Cloud engineer.
+  image_optimization_function_config = {
+    filename = "image-optimization.zip"
+  }
 
-    A website is just that - a website, not a 'website with 6 lambdas and a VPC'. Similarly, an API is just an API, not an 'API with a EC2 and a security group'. This is the way the modules are designed. They are designed to be simple and easy to understand.
+  revlidation_function_config = {
+    filename = "revlidation.zip"
+  }
 
-  </Accordion>
-</AccordionGroup>
+  warmer_function_config = {
+    filename = "warmer.zip"
+  }
+}
+```
+
+</CodeGroup>
+
+To prepare the zip files required for this module, you'll need to utilize the open-next CLI to generate the zip bundles. Refer to [OpenNext](https://open-next.js.org/get_started) for the latest commands.
+
+As of open-next v2.3.4, the following command will generate the zip bundles:
+
+```sh
+npx open-next@v2.3.4 build
+```

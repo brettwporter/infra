@@ -1,0 +1,18 @@
+<svg width="1200" height="500" viewBox="0 0 1200 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_24_103)">
+<rect width="1200" height="500" rx="24" fill="white"/>
+<path d="M405 130H195C178.431 130 165 143.431 165 160V280C165 296.569 178.431 310 195 310H405C421.569 310 435 296.569 435 280V160C435 143.431 421.569 130 405 130Z" stroke="#FFC799" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M150 370H450" stroke="#FFC799" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M484 250H522C535.255 250 546 260.745 546 274V345.422C546 358.677 556.745 369.422 570 369.422H1133C1146.25 369.422 1157 380.167 1157 393.422V428C1157 441.255 1146.25 452 1133 452H1021.25C1007.99 452 997.245 462.745 997.245 476V502.618" stroke="#FFC799" stroke-width="8" stroke-miterlimit="0" stroke-linecap="round" stroke-linejoin="bevel"/>
+<path d="M484 250H958.583C971.837 250 982.583 239.255 982.583 226V131.968C982.583 118.713 993.328 107.968 1006.58 107.968H1199.67C1200.09 107.968 1200.43 108.31 1200.43 108.732V108.732" stroke="#FFC799" stroke-width="8" stroke-miterlimit="0" stroke-linecap="round" stroke-linejoin="bevel"/>
+<path d="M484 250H524C537.255 250 548 239.255 548 226V149C548 135.745 558.745 125 572 125H757.507C770.762 125 781.507 114.255 781.507 101V0.122192" stroke="#FFC799" stroke-width="8" stroke-miterlimit="0" stroke-linecap="round" stroke-linejoin="bevel"/>
+<path d="M484 250H524C537.255 250 548 239.255 548 226V212C548 198.745 558.745 188 572 188H817C830.255 188 841 177.255 841 164V104C841 90.7451 851.745 79.9999 865 79.9999H978.48C991.735 79.9999 1002.48 69.2547 1002.48 55.9999V-2.50842" stroke="#FFC799" stroke-width="8" stroke-miterlimit="0" stroke-linecap="round" stroke-linejoin="bevel"/>
+<path d="M484 250H522C535.255 250 546 260.745 546 274V390C546 403.255 556.745 414 570 414H922C933.046 414 942 422.954 942 434V434C942 445.046 933.046 454 922 454H624C610.745 454 600 464.745 600 478V496" stroke="#FFC799" stroke-width="8" stroke-miterlimit="0" stroke-linecap="round" stroke-linejoin="bevel"/>
+<path d="M484 250H522C535.255 250 546 260.745 546 274V296C546 309.255 556.745 320 570 320H1093C1106.25 320 1117 309.255 1117 296V274C1117 260.745 1127.75 250 1141 250H1196" stroke="#FFC799" stroke-width="8" stroke-miterlimit="0" stroke-linecap="round" stroke-linejoin="bevel"/>
+</g>
+<defs>
+<clipPath id="clip0_24_103">
+<rect width="1200" height="500" rx="24" fill="white"/>
+</clipPath>
+</defs>
+</svg>
