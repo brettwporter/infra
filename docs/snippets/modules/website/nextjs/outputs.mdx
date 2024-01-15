@@ -1,3 +1,4 @@
+```hcl outputs.tf
 /**
  * Server Function
  ***/
@@ -51,3 +52,4 @@ output "revalidation_queue" {
   description = "The revalidation queue attributes. Attributes are documented under the aws_sqs_queue resource in the AWS Provider documentation."
   value       = aws_sqs_queue.revalidation_queue
 }
+```

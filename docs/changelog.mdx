@@ -25,8 +25,6 @@ This architecture is based on utilizing OpenNext for generation of the site bund
 
 Below is how you'd reference the Website module in your Terraform configuration with some configurations provided. Refer to the [Website](/modules/website/nextjs) docs for full configuration options.
 
-<CodeGroup>
-
 ```hcl Code
 module "website" {
   source = "path-to-copied-website-module"
@@ -48,8 +46,6 @@ module "website" {
   }
 }
 ```
-
-</CodeGroup>
 
 To prepare the zip files required for this module, you'll need to utilize the open-next CLI to generate the zip bundles. Refer to [OpenNext](https://open-next.js.org/get_started) for the latest commands.
 
