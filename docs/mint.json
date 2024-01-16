@@ -62,7 +62,12 @@
     },
     {
       "group": "Contributing",
-      "pages": ["contributing/introduction"]
+      "pages": [
+        "contributing/getting-started",
+        "contributing/development",
+        "contributing/testing",
+        "contributing/versioning"
+      ]
     }
   ],
   "footerSocials": {
