@@ -68,7 +68,11 @@
   "footerSocials": {
     "github": "https://github.com/brettwporter/infra"
   },
-  "feedback.thumbsRating": true,
+  "feedback": {
+    "thumbsRating": true,
+    "suggestEdit": true,
+    "raiseIssue": true
+  },
   "metadata": {
     "og:title": "brettwporter/infra",
     "og:description": "Expertly crafted Terraform modules ready for use in your infrastructure. Designed for simplicity, customization, and featuring open-source transparency.",
