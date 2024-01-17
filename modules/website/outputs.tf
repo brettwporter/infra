@@ -17,6 +17,15 @@ output "image_optimization_function" {
 }
 
 /**
+ * Asset Files Bucket
+ ***/
+
+output "asset_bucket" {
+  description = "The asset files bucket attributes. Attributes are documented under the aws_s3_bucket resource in the AWS Provider documentation."
+  value       = aws_s3_bucket.asset_bucket
+}
+
+/**
  * Revalidation Function
  ***/
 

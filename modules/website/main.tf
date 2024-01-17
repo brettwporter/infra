@@ -87,7 +87,7 @@ resource "aws_iam_role_policy" "server_lambda" {
           "s3:PutObject"
         ]
         Effect   = "Allow"
-        Resource = "INSERT CACHE S3 BUCKET ARNS"
+        Resource = "${aws_s3_bucket.cache_bucket.arn}/*"
       },
       {
         Action = [
@@ -144,8 +144,7 @@ resource "aws_lambda_function" "image_optimization" {
 
   environment {
     variables = {
-      BUCKET_NAME       = "INSERT_ASSET_BUCKET_NAME_HERE"
-      BUCKET_KEY_PREFIX = "INSERT_ASSET_BUCKET_KEY_PREFIX_HERE (Optional)"
+      BUCKET_NAME = aws_s3_bucket.asset_files_bucket.id
     }
   }
 
@@ -180,7 +179,7 @@ resource "aws_iam_role_policy" "image_optimization" {
           "s3:GetObject"
         ]
         Effect   = "Allow"
-        Resource = "INSERT ASSET S3 BUCKET ARN"
+        Resource = "${aws_s3_bucket.asset_files_bucket.arn}/*"
       }
     ]
   })
@@ -190,6 +189,14 @@ resource "aws_iam_role_policy" "image_optimization" {
 /**
  * Asset Files Bucket
  ***/
+
+resource "aws_s3_bucket" "asset_bucket" {
+  bucket = var.asset_bucket_config.bucket_name
+
+  tags = merge(var.shared_tags, {
+    Name = var.asset_bucket_config.bucket_name
+  })
+}
 
 /**
  * Revalidation Function
@@ -255,7 +262,7 @@ resource "aws_iam_role_policy" "revalidation_function" {
           "sqs:ReceiveMessage",
           "sqs:DeleteMessage"
         ],
-        Effect = "Allow",
+        Effect   = "Allow",
         Resource = aws_sqs_queue.revalidation_queue.arn
       }
     ]
@@ -272,7 +279,7 @@ resource "aws_lambda_event_source_mapping" "revalidation_queue" {
  ***/
 
 resource "aws_sqs_queue" "revalidation_queue" {
-  name = "revalidation-queue.fifo"
+  name       = "revalidation-queue.fifo"
   fifo_queue = true
 
   tags = merge(var.shared_tags, {
@@ -331,7 +338,7 @@ resource "aws_lambda_function" "warmer" {
   environment {
     variables = {
       FUNCTION_NAME = var.server_function_config.function_name
-      CONCURRENCY  = var.warmer_function_config.concurrency
+      CONCURRENCY   = var.warmer_function_config.concurrency
     }
   }
 

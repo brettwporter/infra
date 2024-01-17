@@ -33,9 +33,23 @@ variable "image_optimization_function_config" {
 }
 
 /**
+ * Asset Files Bucket
+ ***/
+
+variable "asset_bucket_config" {
+  description = "Configuration for the asset files bucket"
+  type = object({
+    bucket_name = optional(string, "asset-files")
+  })
+  default = {
+    bucket_name = "asset-files"
+  }
+}
+
+/**
  * Revalidation Function
  ***/
- 
+
 variable "revlidation_function_config" {
   description = "Configuration for the revalidation function"
   type = object({

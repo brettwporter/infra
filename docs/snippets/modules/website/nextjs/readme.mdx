@@ -1,15 +1,18 @@
-```md README
+```md README.md
 <!-- BEGIN_TF_DOCS -->
 
 ## Requirements
 
-No requirements.
+| Name                                                                     | Version |
+| ------------------------------------------------------------------------ | ------- |
+| <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >= 0.13 |
+| <a name="requirement_aws"></a> [aws](#requirement_aws)                   | ~> 3.0  |
 
 ## Providers
 
 | Name                                             | Version |
 | ------------------------------------------------ | ------- |
-| <a name="provider_aws"></a> [aws](#provider_aws) | n/a     |
+| <a name="provider_aws"></a> [aws](#provider_aws) | ~> 3.0  |
 
 ## Modules
 
@@ -17,27 +20,32 @@ No modules.
 
 ## Resources
 
-| Name                                                                                                                                                          | Type     |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| [aws_iam_role.image_optimization](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role)                                       | resource |
-| [aws_iam_role.revalidation_function](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role)                                    | resource |
-| [aws_iam_role.server_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role)                                            | resource |
-| [aws_iam_role.warmer_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role)                                            | resource |
-| [aws_iam_role_policy.image_optimization](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy)                         | resource |
-| [aws_iam_role_policy.revalidation_function](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy)                      | resource |
-| [aws_iam_role_policy.server_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy)                              | resource |
-| [aws_iam_role_policy.warmer_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy)                              | resource |
-| [aws_lambda_event_source_mapping.revalidation_queue](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping) | resource |
-| [aws_lambda_function.image_optimization](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function)                         | resource |
-| [aws_lambda_function.revalidation_function](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function)                      | resource |
-| [aws_lambda_function.server](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function)                                     | resource |
-| [aws_lambda_function.warmer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function)                                     | resource |
-| [aws_sqs_queue.revalidation_queue](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue)                                     | resource |
+| Name                                                                                                                                                          | Type        |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| [aws_iam_role.image_optimization](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role)                                       | resource    |
+| [aws_iam_role.revalidation_function](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role)                                    | resource    |
+| [aws_iam_role.server_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role)                                            | resource    |
+| [aws_iam_role.warmer_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role)                                            | resource    |
+| [aws_iam_role_policy.image_optimization](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy)                         | resource    |
+| [aws_iam_role_policy.revalidation_function](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy)                      | resource    |
+| [aws_iam_role_policy.server_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy)                              | resource    |
+| [aws_iam_role_policy.warmer_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy)                              | resource    |
+| [aws_lambda_event_source_mapping.revalidation_queue](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping) | resource    |
+| [aws_lambda_function.image_optimization](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function)                         | resource    |
+| [aws_lambda_function.revalidation_function](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function)                      | resource    |
+| [aws_lambda_function.server](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function)                                     | resource    |
+| [aws_lambda_function.warmer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function)                                     | resource    |
+| [aws_s3_bucket.asset_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket)                                           | resource    |
+| [aws_s3_bucket.cache_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket)                                           | resource    |
+| [aws_sqs_queue.revalidation_queue](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue)                                     | resource    |
+| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region)                                                   | data source |
 
 ## Inputs
 
 | Name                                                                                                                                    | Description                                       | Type                                                                                                                                                                                                                                                                                                                                                  | Default                                                                                    | Required |
 | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | :------: |
+| <a name="input_asset_bucket_config"></a> [asset_bucket_config](#input_asset_bucket_config)                                              | Configuration for the asset files bucket          | <pre>object({<br> bucket_name = optional(string, "asset-files")<br> })</pre>                                                                                                                                                                                                                                                                          | <pre>{<br> "bucket_name": "asset-files"<br>}</pre>                                         |    no    |
+| <a name="input_cache_bucket_config"></a> [cache_bucket_config](#input_cache_bucket_config)                                              | Configuration for the cache files bucket          | <pre>object({<br> bucket_name = optional(string, "cache-files")<br> })</pre>                                                                                                                                                                                                                                                                          | <pre>{<br> "bucket_name": "cache-files"<br>}</pre>                                         |    no    |
 | <a name="input_image_optimization_function_config"></a> [image_optimization_function_config](#input_image_optimization_function_config) | Configuration for the image optimization function | <pre>object({<br> filename = string<br> function_name = optional(string, "image-optimization")<br> handler = optional(string, "index.mjs")<br> memory_size = optional(number, 2048)<br> runtime = optional(string, "nodejs20.x")<br> timeout = optional(number, 10)<br> tracing_enabled = optional(bool, true)<br> })</pre>                           | n/a                                                                                        |   yes    |
 | <a name="input_revlidation_function_config"></a> [revlidation_function_config](#input_revlidation_function_config)                      | Configuration for the revalidation function       | <pre>object({<br> filename = string<br> function_name = optional(string, "revalidation")<br> handler = optional(string, "index.mjs")<br> memory_size = optional(number, 2048)<br> runtime = optional(string, "nodejs20.x")<br> timeout = optional(number, 10)<br> tracing_enabled = optional(bool, true)<br> })</pre>                                 | n/a                                                                                        |   yes    |
 | <a name="input_server_function_config"></a> [server_function_config](#input_server_function_config)                                     | Configuration for the server function             | <pre>object({<br> filename = string<br> function_name = optional(string, "server")<br> handler = optional(string, "index.mjs")<br> memory_size = optional(number, 2048)<br> runtime = optional(string, "nodejs20.x")<br> timeout = optional(number, 10)<br> tracing_enabled = optional(bool, true)<br> })</pre>                                       | n/a                                                                                        |   yes    |
@@ -49,10 +57,12 @@ No modules.
 
 | Name                                                                                                                 | Description                                                                                                                                     |
 | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| <a name="output_cache_bucket"></a> [cache_bucket](#output_cache_bucket)                                              | The cache files bucket attributes. Attributes are documented under the aws_s3_bucket resource in the AWS Provider documentation.                |
 | <a name="output_image_optimization_function"></a> [image_optimization_function](#output_image_optimization_function) | The image optimization function attributes. Attributes are documented under the aws_lambda_function resource in the AWS Provider documentation. |
 | <a name="output_revalidation_function"></a> [revalidation_function](#output_revalidation_function)                   | The revalidation function attributes. Attributes are documented under the aws_lambda_function resource in the AWS Provider documentation.       |
 | <a name="output_revalidation_queue"></a> [revalidation_queue](#output_revalidation_queue)                            | The revalidation queue attributes. Attributes are documented under the aws_sqs_queue resource in the AWS Provider documentation.                |
 | <a name="output_server_function"></a> [server_function](#output_server_function)                                     | The server function attributes. Attributes are documented under the aws_lambda_function resource in the AWS Provider documentation.             |
+| <a name="output_warmer_function"></a> [warmer_function](#output_warmer_function)                                     | The warmer function attributes. Attributes are documented under the aws_lambda_function resource in the AWS Provider documentation.             |
 
 <!-- END_TF_DOCS -->
 ```
