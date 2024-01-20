@@ -153,6 +153,12 @@ resource "aws_lambda_function" "image_optimization" {
   })
 }
 
+resource "aws_lambda_function_url" "image_optimization" {
+  function_name      = aws_lambda_function.image_optimization.function_name
+  authorization_type = "NONE"
+  invoke_mode        = "BUFFERED"
+}
+
 resource "aws_iam_role" "image_optimization" {
   name = var.image_optimization_function_config.function_name
   assume_role_policy = jsonencode({
@@ -347,6 +353,12 @@ resource "aws_lambda_function" "warmer" {
   })
 }
 
+resource "aws_lambda_function_url" "server" {
+  function_name      = aws_lambda_function.server.function_name
+  authorization_type = "NONE"
+  invoke_mode        = "BUFFERED"
+}
+
 resource "aws_iam_role" "warmer_lambda" {
   name = var.warmer_function_config.function_name
   assume_role_policy = jsonencode({
@@ -383,3 +395,163 @@ resource "aws_iam_role_policy" "warmer_lambda" {
 /**
  * Warmer Eventbridge Cron
  ***/
+
+/**
+ * CloudFront Distribution
+ ***/
+
+resource "aws_cloudfront_function" "host_header_function" {
+  name    = "host-header-function"
+  runtime = "cloudfront-js-1.0"
+  comment = "Next.js Function for Preserving Original Host"
+  publish = true
+  code    = file("${path.module}/resources/host-header-function.js")
+}
+
+resource "aws_cloudfront_origin_access_identity" "this" {
+  comment = "Origin Access Identity for the Next.js website"
+}
+
+resource "aws_cloudfront_distribution" "this" {
+  comment = "Distribution for the Next.js website"
+  enabled = true
+
+  restrictions {
+    geo_restriction {
+      restriction_type = "none"
+    }
+  }
+
+  viewer_certificate {
+    cloudfront_default_certificate = true
+  }
+
+  # S3 Bucket Origin
+  origin {
+    domain_name = aws_s3_bucket.asset_files_bucket.bucket_regional_domain_name
+    origin_id   = aws_s3_bucket.asset_files_bucket.id
+    origin_path = "/assets"
+
+    s3_origin_config {
+      origin_access_identity = aws_cloudfront_origin_access_identity.this.cloudfront_access_identity_path
+    }
+  }
+
+  # Server Function Origin
+  origin {
+    domain_name = aws_lambda_function_url.server_function.function_url
+    origin_id   = aws_lambda_function.server.function_name
+
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "https-only"
+      origin_ssl_protocols   = ["TLSv1.2"]
+    }
+  }
+
+  # Image Optimization Function Origin
+  origin {
+    domain_name = aws_lambda_function_url.image_optimization.function_url
+    origin_id   = aws_lambda_function.image_optimization.function_name
+
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "https-only"
+      origin_ssl_protocols   = ["TLSv1.2"]
+    }
+  }
+
+  # Cache behavior with precedence 1
+  ordered_cache_behavior {
+    path_pattern     = "/_next/static/*"
+    allowed_methods  = ["GET", "HEAD", "OPTIONS"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = aws_s3_bucket.asset_files_bucket.Identity
+
+    compress               = true
+    viewer_protocol_policy = "redirect-to-https"
+  }
+
+  # Cache behavior with precedence 2
+  ordered_cache_behavior {
+    path_pattern     = "/favicon.ico"
+    allowed_methods  = ["GET", "HEAD", "OPTIONS"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = aws_s3_bucket.asset_files_bucket.Identity
+
+    compress               = true
+    viewer_protocol_policy = "redirect-to-https"
+  }
+
+  # Cache behavior with precedence 3
+  ordered_cache_behavior {
+    path_pattern     = "/my-images/*"
+    allowed_methods  = ["GET", "HEAD", "OPTIONS"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = aws_lambda_function.image_optimization.function_name
+
+    compress               = true
+    viewer_protocol_policy = "redirect-to-https"
+  }
+
+  # Cache behavior with precedence 4
+  ordered_cache_behavior {
+    path_pattern     = "/_next/image"
+    allowed_methods  = ["GET", "HEAD", "OPTIONS"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = aws_lambda_function.server.function_name
+
+    compress               = true
+    viewer_protocol_policy = "redirect-to-https"
+  }
+
+  # Cache behavior with precedence 5
+  ordered_cache_behavior {
+    path_pattern     = "/_next/data/*"
+    allowed_methods  = ["GET", "HEAD", "OPTIONS"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = aws_lambda_function.server.function_name
+
+    compress               = true
+    viewer_protocol_policy = "redirect-to-https"
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.host_header_function.arn
+    }
+  }
+
+  # Cache behavior with precedence 6
+  ordered_cache_behavior {
+    path_pattern     = "/api/*"
+    allowed_methods  = ["GET", "HEAD", "OPTIONS"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = aws_lambda_function.server.function_name
+
+    compress               = true
+    viewer_protocol_policy = "redirect-to-https"
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.host_header_function.arn
+    }
+  }
+
+  default_cache_behavior {
+    allowed_methods  = ["GET", "HEAD", "OPTIONS"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = aws_lambda_function.server.function_name
+
+
+    compress               = true
+    viewer_protocol_policy = "redirect-to-https"
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.host_header_function.arn
+    }
+  }
+}
+
