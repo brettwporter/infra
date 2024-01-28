@@ -35,6 +35,24 @@ output "revalidation_function" {
 }
 
 /**
+ * Revalidation Queue
+ ***/
+
+output "revalidation_queue" {
+  description = "The revalidation queue attributes. Attributes are documented under the aws_sqs_queue resource in the AWS Provider documentation."
+  value       = aws_sqs_queue.revalidation_queue
+}
+
+/**
+ * Revalidation Tag-to-path Mapping DynamoDB Table
+ ***/
+
+output "revalidation_table" {
+  description = "The revalidation tag-to-path mapping DynamoDB table attributes. Attributes are documented under the aws_dynamodb_table resource in the AWS Provider documentation."
+  value       = aws_dynamodb_table.revalidation_table
+}
+
+/**
  * Cache Files Bucket
  ***/
 
@@ -50,6 +68,15 @@ output "cache_bucket" {
 output "warmer_function" {
   description = "The warmer function attributes. Attributes are documented under the aws_lambda_function resource in the AWS Provider documentation."
   value       = aws_lambda_function.warmer
+}
+
+/**
+ * Warmer Eventbridge Cron
+ ***/
+
+output "warmer_eventbridge_cron" {
+  description = "The warmer eventbridge cron attributes. Attributes are documented under the aws_cloudwatch_event_rule resource in the AWS Provider documentation."
+  value       = aws_cloudwatch_event_rule.warmer
 }
 
 /**

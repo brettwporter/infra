@@ -78,6 +78,20 @@ variable "cache_bucket_config" {
 }
 
 /**
+ * Revalidation Tag-to-path Mapping DynamoDB Table
+ ***/
+
+variable "revalidation_table_config" {
+  description = "Configuration for the revalidation table"
+  type = object({
+    table_name = optional(string, "revalidation")
+  })
+  default = {
+    table_name = "revalidation"
+  }
+}
+
+/**
  * Warmer Function
  ***/
 
@@ -93,6 +107,22 @@ variable "warmer_function_config" {
     tracing_enabled = optional(bool, true)
     concurrency     = optional(number, 1)
   })
+}
+
+/**
+ * Warmer Eventbridge Cron
+ ***/
+
+variable "warmer_eventbridge_cron_config" {
+  description = "Configuration for the warmer eventbridge cron"
+  type = object({
+    name                = optional(string, "warmer")
+    schedule_expression = optional(string, "rate(5 minutes)")
+  })
+  default = {
+    name                = "warmer"
+    schedule_expression = "rate(5 minutes)"
+  }
 }
 
 /**

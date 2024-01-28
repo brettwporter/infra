@@ -40,7 +40,7 @@ resource "aws_lambda_function" "server" {
     variables = {
       CACHE_BUCKET_NAME         = aws_s3_bucket.cache_bucket.id
       CACHE_BUCKET_REGION       = data.aws_region.current.name
-      CACHE_DYNAMO_TABLE        = "INSERT_CACHE_DYNAMO_TABLE_HERE"
+      CACHE_DYNAMO_TABLE        = aws_dynamodb_table.revalidation_tag_to_path_mapping.id
       REVALIDATION_QUEUE_URL    = aws_sqs_queue.revalidation_queue.id
       REVALIDATION_QUEUE_REGION = data.aws_region.current.name
     }
@@ -102,7 +102,7 @@ resource "aws_iam_role_policy" "server_lambda" {
           "dynamodb:GetItem"
         ]
         Effect   = "Allow"
-        Resource = "INSERT CACHE DYNAMO TABLE ARNS"
+        Resource = aws_dynamodb_table.revalidation_tag_to_path_mapping.arn
       }
     ]
   })
@@ -431,8 +431,8 @@ resource "aws_iam_role_policy" "warmer_lambda" {
  ***/
 
 resource "aws_cloudwatch_event_rule" "warmer_eventbridge_cron" {
-  name                = var.warmer_function_config.eventbridge_cron.name
-  schedule_expression = var.warmer_function_config.eventbridge_cron.schedule_expression
+  name                = var.warmer_eventbridge_cron_config.name
+  schedule_expression = var.warmer_eventbridge_cron_config.schedule_expression
 }
 
 resource "aws_cloudwatch_event_target" "warmer_eventbridge_cron_target" {
