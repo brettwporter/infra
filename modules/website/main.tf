@@ -297,6 +297,40 @@ resource "aws_sqs_queue" "revalidation_queue" {
  * Revalidation Tag-to-path Mapping DynamoDB Table
  ***/
 
+resource "aws_dynamodb_table" "revalidation_tag_to_path_mapping" {
+  name = var.revalidation_tag_to_path_mapping_dynamodb_table_config.table_name
+
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "tag"
+  range_key    = "path"
+
+  attribute {
+    name = "tag"
+    type = "S"
+  }
+
+  attribute {
+    name = "path"
+    type = "S"
+  }
+
+  attribute {
+    name = "revalidatedAt"
+    type = "N"
+  }
+
+  global_secondary_index {
+    name            = "revalidate"
+    hash_key        = "path"
+    range_key       = "revalidatedAt"
+    projection_type = "KEYS_ONLY"
+  }
+
+  tags = merge(var.shared_tags, {
+    Name = var.revalidation_tag_to_path_mapping_dynamodb_table_config.table_name
+  })
+}
+
 /**
  * Cache Files Bucket
  ***/
