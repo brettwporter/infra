@@ -430,6 +430,16 @@ resource "aws_iam_role_policy" "warmer_lambda" {
  * Warmer Eventbridge Cron
  ***/
 
+resource "aws_cloudwatch_event_rule" "warmer_eventbridge_cron" {
+  name                = var.warmer_function_config.eventbridge_cron.name
+  schedule_expression = var.warmer_function_config.eventbridge_cron.schedule_expression
+}
+
+resource "aws_cloudwatch_event_target" "warmer_eventbridge_cron_target" {
+  arn  = aws_lambda_function.warmer.arn
+  rule = aws_cloudwatch_event_rule.scheduled_lambda_event_rule.name
+}
+
 /**
  * CloudFront Distribution
  ***/
