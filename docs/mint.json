@@ -49,7 +49,7 @@
   "navigation": [
     {
       "group": "Getting Started",
-      "pages": ["introduction", "quickstart", "changelog"]
+      "pages": ["introduction", "changelog"]
     },
     {
       "group": "Modules",
@@ -62,12 +62,7 @@
     },
     {
       "group": "Contributing",
-      "pages": [
-        "contributing/getting-started",
-        "contributing/development",
-        "contributing/testing",
-        "contributing/versioning"
-      ]
+      "pages": ["contributing/getting-started", "contributing/development"]
     }
   ],
   "footerSocials": {
